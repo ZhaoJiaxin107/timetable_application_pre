@@ -35,7 +35,7 @@ exports.login = function(req,res){
             if(recordset.recordset.length){
                 req.session.userId = recordset.recordset[0].id;
                 req.session.user = recordset.recordset[0];
-                console.log(req.session.userId);
+                //console.log(req.session.userId);
                 res.redirect('/home/dashboard');
             }else{
                 message = "Wrong Credentials!";
@@ -50,7 +50,7 @@ exports.login = function(req,res){
 exports.dashboard = function(req,res,next){
     var user = req.session.user;
     var userId = req.session.userId;
-    console.log("userId = "+userId);
+    //console.log("userId = "+userId);
     if(userId == null){
         res.redirect("/login");
         return;
@@ -78,7 +78,7 @@ exports.profile = function(req,res){
     var sql = "select * from users where id = " + userId + "";
     //console.log(sql);
     db.query(sql,function(err,recordset){
-        console.log(recordset.recordset);
+        //console.log(recordset.recordset);
         res.render('profile.ejs',{data:recordset.recordset});
     });
 };
