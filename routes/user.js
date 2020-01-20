@@ -6,10 +6,16 @@ exports.signup = function(req,res){
         var post = req.body;
         var first_name = post.first_name;
         var last_name = post.last_name;
-        var email = post.email;
+        var email = post.email.value;
         var mobile_num = post.mobile_num;
         var username = post.username;
-
+        emailRegex =/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!emailRegex.test(email)){
+            message = "Email format is not correct!";
+            res.render('signup.ejs',{message:message});
+            return false;
+        }
+   
         //hash password
         const salt = genSaltSync(10);
 
@@ -33,13 +39,10 @@ exports.login = function(req,res){
     if(req.method == "POST"){
         var post = req.body;
         var username = post.username;
-        //var password = compareSync(post.password,password);
     
         var sql = "select id,first_name,last_name,email,password from users where username = '"+username+"'";
-        //console.log(sql);
         db.query(sql,function(err,recordset){
             var password = recordset.recordset[0].password;
-            //console.log(compareSync(post.password,password));
             if(compareSync(post.password,password)){
                 req.session.userId = recordset.recordset[0].id;
                 req.session.user = recordset.recordset[0];

@@ -22,3 +22,5 @@ insert into users(first_name,last_name,email,mobile_num,username,password)
 values('Bharti','Upadhyay','bupadhy@uwo.ca','1-(519)5562432','bupadhy','123456')
 
 select id,first_name,last_name,email from users where username = 'jzhao537' and password = '123456'
+select id,first_name,last_name,email,password from users where username = 'jzhao537'
+delete from users where id=1002
