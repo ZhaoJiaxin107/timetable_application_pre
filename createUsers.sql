@@ -1,4 +1,5 @@
 use test;
+drop table users
 create table users(
 	id int identity(1,1) not null,
 	first_name nvarchar(20) not null,
@@ -6,10 +7,11 @@ create table users(
 	email nvarchar(40) not null,
 	mobile_num nvarchar(40) not null,
 	username nvarchar(40) not null,
-	password nvarchar(40) not null,
+	password nvarchar(250) not null,
 	constraint users_pk primary key(id)
 );
 select * from users;
+delete from users where id=3;
 insert into users(first_name,last_name,email,mobile_num,username,password) 
 values('Jiaxin','Zhao','jzhao537@uwo.ca','1-(519)6944295','jzhao537','123456')
 insert into users(first_name,last_name,email,mobile_num,username,password) 

@@ -1,3 +1,4 @@
+const {hashSync,genSaltSync,compareSync} = require('bcryptjs');
 //sign up page
 exports.signup = function(req,res){
     message = '';
@@ -8,10 +9,14 @@ exports.signup = function(req,res){
         var email = post.email;
         var mobile_num = post.mobile_num;
         var username = post.username;
-        var password = post.password;
 
+        //hash password
+        const salt = genSaltSync(10);
+
+        var password = hashSync(post.password,salt);
+        console.log(password);
         var sql = "insert into users(first_name,last_name,email,mobile_num,username,password) values ('" + first_name + "','" + last_name + "','" + email + "','" + mobile_num + "','" + username + "','" + password +"')";
-
+        
         var query = db.query(sql,function(err,result){
             message = "Successfully! A new account has been created!";
             res.render('signup.ejs',{message:message});
@@ -28,11 +33,14 @@ exports.login = function(req,res){
     if(req.method == "POST"){
         var post = req.body;
         var username = post.username;
-        var password = post.password;
-        var sql = "select id,first_name,last_name,email from users where username = '"+username+"' and password = '"+password+"'";
+        //var password = compareSync(post.password,password);
+    
+        var sql = "select id,first_name,last_name,email,password from users where username = '"+username+"'";
         //console.log(sql);
         db.query(sql,function(err,recordset){
-            if(recordset.recordset.length){
+            var password = recordset.recordset[0].password;
+            //console.log(compareSync(post.password,password));
+            if(compareSync(post.password,password)){
                 req.session.userId = recordset.recordset[0].id;
                 req.session.user = recordset.recordset[0];
                 //console.log(req.session.userId);
