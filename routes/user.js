@@ -1,12 +1,14 @@
-//validation
-const Joi = require('@hapi/joi');
 //hash password
 const {hashSync,genSaltSync,compareSync} = require('bcryptjs');
+const { registerValidation,loginValidation } = require('../config/validation');
 //sign up page
 exports.signup = function(req,res){
     message = '';
     if(req.method == "POST"){
         var post = req.body;
+
+        const { error } = registerValidation(req.body);
+        if(error) return res.status(400).send(error.details[0].message);
         var first_name = post.first_name;
         var last_name = post.last_name;
         var email = post.email;
