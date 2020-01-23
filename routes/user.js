@@ -1,3 +1,6 @@
+//validation
+const Joi = require('@hapi/joi');
+//hash password
 const {hashSync,genSaltSync,compareSync} = require('bcryptjs');
 //sign up page
 exports.signup = function(req,res){
@@ -6,10 +9,11 @@ exports.signup = function(req,res){
         var post = req.body;
         var first_name = post.first_name;
         var last_name = post.last_name;
-        var email = post.email.value;
+        var email = post.email;
         var mobile_num = post.mobile_num;
         var username = post.username;
-        emailRegex =/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        emailRegex = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+        //console.log(emailRegex.test(email));
         if(!emailRegex.test(email)){
             message = "Email format is not correct!";
             res.render('signup.ejs',{message:message});
